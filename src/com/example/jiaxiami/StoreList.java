@@ -62,16 +62,17 @@ public class StoreList extends Activity implements LocationListener{
 	LocationManager lm;
 	String bestProv;
 	Location location;
-	double x,y;         //經緯度
+	double x,y,lat,lng;         //經緯度
+	float distance;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_store_list);
 
-		lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+		lm = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
-		bestProv = lm.getBestProvider(criteria, true);
+		bestProv = this.lm.getBestProvider(criteria, true);
 		context = this;
 	    list = new ArrayList<Boolean>();
 //		MyTest();
@@ -178,8 +179,8 @@ public class StoreList extends Activity implements LocationListener{
 						resObj = new JSONObject(res);
 						JSONArray obj2 = resObj.getJSONArray("results");
 						JSONObject obj3 = obj2.getJSONObject(0);
-						double lat = obj3.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
-						double lng = obj3.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+						lat = obj3.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+						lng = obj3.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
 						Log.d("NETWORK", "lat:" + lat);
 						/*
 						resArr = new JSONArray(res);
@@ -190,8 +191,8 @@ public class StoreList extends Activity implements LocationListener{
 						it.putExtra("ID", ID);
 						it.putExtra("lag", lat);
 						it.putExtra("lng", lng);
-						it.putExtra("x", x);
-						it.putExtra("y", y);
+						it.putExtra("distance", distance);
+
 						startActivity(it);
 					 
 					} catch (IOException e) {
@@ -207,14 +208,13 @@ public class StoreList extends Activity implements LocationListener{
 					
 
 				}});
-
+	        
 	        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)||lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 	        	lm.requestLocationUpdates(bestProv, 1000, 1, this);
 	        	Log.d("setlocat","定位");
-
-	        	location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	        	 if(location == null){
-	            location=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//	        	location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//	        	 if(location == null){
+//	            location=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	        }else {
 	        	Toast.makeText(this, "請開啟定位服務 以方便使用更多服務", Toast.LENGTH_LONG).show();
 	        }
@@ -225,7 +225,7 @@ public class StoreList extends Activity implements LocationListener{
 	 	            }catch(java.lang.NullPointerException e){
 	 	            	e.getStackTrace();
 	 	            }
-	        	 }
+	        	 
 	        Log.d("locat",x+","+y);
 	    }
 
@@ -404,11 +404,16 @@ public class StoreList extends Activity implements LocationListener{
 	public void onLocationChanged(Location location) {
 		this.location = location;
 		x = location.getLongitude();
-		y = location.getLongitude();
+		y = location.getLatitude();
 //		LatLng point = new LatLng(location.getLatitude(),location.getLongitude());
 		Log.d("location","open");
+		Log.d("location","" + x + "," + y);
 		Toast.makeText(this, "open", Toast.LENGTH_SHORT).show();
-		
+		Location dest = new Location(location);
+		dest.setLatitude(lat);
+		dest.setLongitude(lng);
+		distance = location.distanceTo(dest) /1000;
+		Log.d("location","" + distance);
 	}
 
 	@Override
@@ -428,5 +433,16 @@ public class StoreList extends Activity implements LocationListener{
 		bestProv = lm.getBestProvider(criteria, true);
 		
 	}
+	
+//	public float distanceTo(Location dest) {
+//		Location des = new Location(dest);
+//		location.setLongitude(x);
+//		location.setLatitude(y);
+//		des.setLatitude(lat);
+//		des.setLatitude(lng);
+//		distance = location.distanceTo(des);
+//		Log.d("location","" + distance);
+//		return distance;
+//	}
     
 }

@@ -19,8 +19,7 @@ public class Food_detail extends Activity {
 
 	TextView tvName, tvAddr, tvTel, tvMoney , tvlocation;
 	int ID;
-	double lag,lng;
-	double x,y;
+	float distance;
 	String bestProv;
 	LocationManager lm;
 	Location location;
@@ -36,8 +35,7 @@ public class Food_detail extends Activity {
 		
 		Intent intent = getIntent();
 		ID = intent.getIntExtra("ID", 0);
-		lag = intent.getDoubleExtra("lag", 0);
-		lng = intent.getDoubleExtra("lng", 0);
+		distance = intent.getFloatExtra("distance", 0);
 //		x = intent.getDoubleExtra("x", 0);
 //		y = intent.getDoubleExtra("y",0);
 	}
@@ -58,7 +56,7 @@ public class Food_detail extends Activity {
 		tvAddr.setText(f.Addr);
 		tvTel.setText(f.Tel);
 		tvMoney.setText("" + f.money);
-		tvlocation.setText("("+lag+","+lng+")");
+		tvlocation.setText("("+distance+")");
 
 //		Geocoder gc = new Geocoder(this, Locale.TRADITIONAL_CHINESE);
 //        try {
