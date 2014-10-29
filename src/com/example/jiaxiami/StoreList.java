@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import com.example.jiaxiami.data.Food;
 import com.example.jiaxiami.data.FoodDAO;
 import com.example.jiaxiami.data.FoodDAOImpl;
-import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -75,7 +74,7 @@ public class StoreList extends Activity implements LocationListener{
 		bestProv = lm.getBestProvider(criteria, true);
 		context = this;
 	    list = new ArrayList<Boolean>();
-		MyTest();
+//		MyTest();
 		SpinView();
 		
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()  
@@ -376,8 +375,6 @@ public class StoreList extends Activity implements LocationListener{
 					startActivity(intent);
 					
 				}});
-    		
-    		
     		
     		File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "p" + data[position].ID + ".jpg");
 	        if (file.exists())

@@ -31,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class AddDataActivity extends Activity {
 
@@ -58,13 +59,11 @@ public class AddDataActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-
+				try {
 				 FoodDAO dao = new FoodDAOImpl(context);
 			     int i = dao.add(new Food(0,etName.getText().toString(),etAddr.getText().toString(),etTel.getText().toString(),Integer.parseInt(etMoney.getText().toString())));   
-				 
-
 			        File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "p" + i + ".jpg");
-	        
+			        
 				 InputStream is = null;
 			        OutputStream os = null;
 			        if (photoSourcePath != null)
@@ -95,8 +94,11 @@ public class AddDataActivity extends Activity {
 				        }	
 			        }
 					finish();
+					}catch(Exception e) {
+						etMoney.setText("" + 0);
+						Toast.makeText(context, "未輸入金額=0元，再度按下即新增", Toast.LENGTH_SHORT).show();
 					}
-				});
+				}});
 		
 		btnCancel.setOnClickListener(new OnClickListener(){
 

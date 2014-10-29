@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
 			     Arrays.sort(data, new RandomFoodCompareMoney());
 			     TextView txtrandom =(TextView) findViewById(R.id.textViewlocation);
 			     txtrandom.setText(data[0].Name);
-			     }catch(ArrayIndexOutOfBoundsException e){
+			     }catch(Exception e){
 			    	 e.getStackTrace();
 			     }
 			}});
