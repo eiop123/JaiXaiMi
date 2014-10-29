@@ -1,20 +1,28 @@
 package com.example.jiaxiami;
 
+import java.io.File;
 import java.util.ArrayList;
-
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 
 import com.example.jiaxiami.data.Food;
 import com.example.jiaxiami.data.FoodDAO;
 import com.example.jiaxiami.data.FoodDAOImpl;
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,22 +35,33 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class StoreList extends Activity {
+public class StoreList extends Activity implements LocationListener {
+	
 	Food[] data;
-	private static String[] condition = {"價格","距離","評價"};
 	Context context;
-	ArrayList<Boolean> list;
+	ArrayList<Boolean> list ;
 	ListAdapter adapter;
+	LocationManager lm;
+	String location;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_store_list);
+		lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+		
+		Criteria criteria = new Criteria();
+		location = lm.getBestProvider(criteria, true);
+		
+		
 		context = this;
 	    list = new ArrayList<Boolean>();
 		MyTest();
@@ -53,7 +72,7 @@ public class StoreList extends Activity {
 	void SpinView(){
 		
 		Spinner condition_fliter = (Spinner) findViewById(R.id.spinner1); 
-		ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(StoreList.this,android.R.layout.simple_spinner_item,condition);
+		ArrayAdapter spinAdapter = ArrayAdapter.createFromResource(StoreList.this,R.array.conditions,android.R.layout.simple_spinner_item);
 		spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		condition_fliter.setAdapter(spinAdapter);
 		condition_fliter.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
@@ -64,24 +83,25 @@ public class StoreList extends Activity {
 				
 				switch(position) {
 				case 0:
+					break;
+				case 1:
 					Arrays.sort(data, new FoodCompareMoney());
 					adapter.notifyDataSetChanged();
 					break;
-				case 1:
-					break;
 				case 2:
+					break;
+				case 3:
 					break;
 				}
 			}
+
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 				
-			}});
-		
-	}
-	
+			}
+	});}
 	class FoodCompareMoney implements Comparator<Food>{
 
 		@Override
@@ -90,12 +110,12 @@ public class StoreList extends Activity {
 		}
 		
 	}
-	
+
 	void MyTest() {
 		FoodDAO dao = new FoodDAOImpl(this);
-		dao.add(new Food(0, "Rice", "ABCD", "123",100));
-		dao.add(new Food(0, "Noodles", "ABCD", "123",70));
-		dao.add(new Food(0, "Soup", "ABCD", "123",50));
+		dao.add(new Food(0, "Rice", "ABCD", "123",220));
+		dao.add(new Food(0, "Noodles", "ABCD", "123",100));
+		dao.add(new Food(0, "Soup", "ABCD", "123",300));
 		Food[] data = dao.getAll();
 		for(int i = 0; i<data.length; i++) {
 			Log.d("FOOD", data[i].Name + "," + data[i].Addr + "," + data[i].Tel + "," + data[i].money);
@@ -136,11 +156,22 @@ public class StoreList extends Activity {
 					// Toast.makeText(context, "" + position, Toast.LENGTH_LONG).show();
 				}});
 
+	        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)||lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+	        	lm.requestLocationUpdates(location, 1000, 1, this);
+	        }
+	        else {
+	        	Toast.makeText(this, "請開啟定位服務 以方便使用更多服務", Toast.LENGTH_LONG).show();
+	        }
 	    }
 
-  
-
     @Override
+	protected void onPause() {
+		super.onPause();
+		lm.removeUpdates(this);
+	}
+    
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.store_list, menu);
@@ -265,6 +296,21 @@ public class StoreList extends Activity {
     		tvname.setText(data[position].Name);
     		tvmoney.setText(String.valueOf(data[position].money));
     		
+    		ImageView iv = (ImageView) v.findViewById(R.id.imageView1);
+    		
+    		
+    		File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "p" + data[position].ID + ".jpg");
+	        
+	        if (file.exists())
+	        {
+	        	Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + "p" + data[position].ID + ".jpg");
+	        	Log.d("abc",Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/"+"p" + data[position].ID + ".jpg");
+	        	iv.setImageBitmap(bm);
+	        }
+	        else{
+    			iv.setImageResource(R.drawable.ic_launcher);
+    		}
+
 			CheckBox chk = (CheckBox) v.findViewById(R.id.checkBox1);
 			chk.setChecked(list.get(position));
 			chk.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener(){
@@ -278,5 +324,30 @@ public class StoreList extends Activity {
 		}
     	
     }
+    
+	@Override
+	public void onLocationChanged(Location location) {
+		String x = Double.toString(location.getLongitude());
+		String y = Double.toString(location.getLongitude());
+		LatLng point = new LatLng(location.getLatitude(),location.getLongitude());
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

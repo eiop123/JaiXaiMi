@@ -1,9 +1,17 @@
 package com.example.jiaxiami;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import com.example.jiaxiami.data.Food;
+import com.example.jiaxiami.data.FoodDAO;
+import com.example.jiaxiami.data.FoodDAOImpl;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,62 +19,98 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 
 public class AddDataActivity extends Activity {
 
-	double lon, lat;
 	EditText etName, etAddr, etTel, etMoney; //TODO Note
-	Button btAdd, btCancel;
+	Button btnAdd, btnCancel , btnPhoto;
 	ImageView img;
-	RatingBar rb1; //TODO incomplete
 	Context context;
-	ImageButton btnPhoto;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_data);
 		
-		
 		context = this;
 		etName = (EditText) findViewById(R.id.editTextName);
 		etAddr = (EditText) findViewById(R.id.editTextAddr);
 		etTel = (EditText) findViewById(R.id.editTextTel);
 		etMoney = (EditText) findViewById(R.id.editTextMoney);
-		btnPhoto = (ImageButton) findViewById(R.id.imageButton1);
+		btnPhoto = (Button) findViewById(R.id.Button1);
 		img = (ImageView) findViewById(R.id.imageView1);
-//		btAdd = (Button) findViewById(R.id.buttonEdit);
-//		btCancel = (Button) findViewById(R.id.buttonCancel);
+		btnAdd = (Button) findViewById(R.id.buttonadd);
+		btnCancel = (Button) findViewById(R.id.buttonCancel);
 		
-//		btAdd.setOnClickListener(new Button.OnClickListener(){
-//
-//			@Override
-//			public void onClick(View arg0) {
-//				FoodDAO dao = new FoodDAOImpl(context);
-//				dao.add(new Food(0, etName.getText().toString(), etAddr.getText().toString(), etTel.getText().toString(), etMoney.getText().toString()));
-//				finish();
-//			}});
-//		
-//		btCancel.setOnClickListener(new Button.OnClickListener(){
-//
-//			@Override
-//			public void onClick(View v) {
-//				finish();
-//			}});
-//		
-//		iv1.setOnClickListener(new ImageView.OnClickListener(){
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Incomplete
-//			}});
+		btnAdd.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				 FoodDAO dao = new FoodDAOImpl(context);
+			        int i = dao.add (new Food(0, etName.getText().toString(), etAddr.getText().toString(), etTel.getText().toString(), Integer.parseInt(etMoney.getText().toString())));
+			        
+			        Log.d("DB", "rowId:" + i);
+			        InputStream is = null;
+			        OutputStream os = null;
+			        File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "p" + i + ".jpg");
+			        
+			        Log.d("DB", dest.toString());
+		
+			        if (photoSourcePath != null)
+			        {
+				        try {
+				            is = new FileInputStream(photoSourcePath);
+				            os = new FileOutputStream(dest);
+				            byte[] buffer = new byte[1024];
+				            int length;
+				            while ((length = is.read(buffer)) > 0) {
+				                os.write(buffer, 0, length);
+				            }
+				        } catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						} finally {
+				            try {
+								is.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+				            try {
+								os.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+				        }	
+			        }
+					finish();
+					}});
+		
+		btnCancel.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		btnPhoto.setOnClickListener(new Button.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				dispatchTakePictureIntent();
+				
+				}});
+
+		
 	}
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		    if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
@@ -99,7 +143,7 @@ public class AddDataActivity extends Activity {
 	    }
 	}
 	
-String mCurrentPhotoPath;
+String mCurrentPhotoPath ,photoSourcePath;
 	
 	private File createImageFile() throws IOException {
 	    // Create an image file name
@@ -112,8 +156,7 @@ String mCurrentPhotoPath;
 	        ".jpg",         /* suffix */
 	        storageDir      /* directory */
 	    );
-
-	    // Save a file: path for use with ACTION_VIEW intents
+	    photoSourcePath = image.getAbsolutePath();
 	    mCurrentPhotoPath = "file:" + image.getAbsolutePath();
 	    return image;
 	}

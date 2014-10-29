@@ -39,7 +39,7 @@ public class Food_detail extends Activity {
 		tvName.setText(f.Name);
 		tvAddr.setText(f.Addr);
 		tvTel.setText(f.Tel);
-		tvMoney.setText(f.money);
+		tvMoney.setText("" + f.money);
 		
 	}
 	

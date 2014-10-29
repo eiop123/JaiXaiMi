@@ -2,7 +2,7 @@ package com.example.jiaxiami.data;
 
 public interface FoodDAO {
 
-	public void add(Food f);
+	public int add(Food f);
 	public Food[] getAll();
 	public Food getFood(int ID);
 	public void removeAll();

@@ -14,11 +14,16 @@ public class FoodDAOImpl implements FoodDAO {
 	}
 	
 	@Override
-	public void add(Food f) {
+	public int add(Food f) {
+		int i;
 		FoodDBHelper helper = new FoodDBHelper(context);
 		SQLiteDatabase db = helper.getWritableDatabase();
 		db.execSQL("Insert into listdata (Name, Addr, Tel, money) values ('" + f.Name +  "', '" + f.Addr + "', '" + f.Tel + "', '" + f.money + "')");
+		Cursor cursor = db.rawQuery("Select last_insert_rowid()",null);
+		cursor.moveToFirst();
+		i = cursor.getInt(0);
 		db.close();
+		return i;
 	}
 
 	@Override

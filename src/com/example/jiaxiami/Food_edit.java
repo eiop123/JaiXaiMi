@@ -17,10 +17,9 @@ import android.widget.RatingBar;
 public class Food_edit extends Activity {
 
 	int ID;
-	double lon, lat;
 	EditText etName, etAddr, etTel, etMoney; //TODO Note
 	Button btEdit, btCancel;
-	RatingBar rb1; //TODO Incomplete
+	RatingBar rb1;
 	Context context;
 	
 	@Override
@@ -42,7 +41,7 @@ public class Food_edit extends Activity {
 		etName.setText(f.Name);
 		etAddr.setText(f.Addr);
 		etTel.setText(f.Tel);
-		etMoney.setText(f.money);
+		etMoney.setText("" + f.money);
 		
 		btEdit = (Button) findViewById(R.id.buttonEdit);
 //		btCancel = (Button) findViewById(R.id.buttonCancel);

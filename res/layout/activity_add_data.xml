@@ -155,13 +155,30 @@
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/known" />
 
-            <ImageButton
-                android:id="@+id/imageButton1"
+            <Button
+                android:id="@+id/Button1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_above="@+id/imageView1"
                 android:layout_alignLeft="@+id/imageView1"
                 android:background="@drawable/cammer" />
+
+            <Button
+                android:id="@+id/buttonadd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/Button1"
+                android:layout_centerHorizontal="true"
+                android:text="add" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/buttonadd"
+                android:layout_alignBottom="@+id/buttonadd"
+                android:layout_toRightOf="@+id/buttonadd"
+                android:text="nagative" />
 
         </RelativeLayout>
 

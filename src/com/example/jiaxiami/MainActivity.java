@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		Button bt = (Button) findViewById(R.id.buttonEdit);
+			
 	}
 
 	public void click(View v){

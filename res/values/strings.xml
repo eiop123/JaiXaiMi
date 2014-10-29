@@ -8,5 +8,10 @@
     <string name="title_activity_food_detail">Food_detail</string>
     <string name="title_activity_add_data">AddDataActivity</string>
     <string name="title_activity_food_edit">Food_edit</string>
-
+	<string-array name = "conditions">
+	    <item>選擇排序項目 | Conditions</item>
+	    <item>金額 | Price</item>
+	    <item>距離 | Distance</item>
+	    <item>評價 | Evolution</item>
+	</string-array>
 </resources>
