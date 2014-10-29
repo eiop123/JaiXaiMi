@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.jiaxiami.Food_detail" >
+
+    <item
+        android:id="@+id/action_edit"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Edit"/>
+
+
+</menu>
