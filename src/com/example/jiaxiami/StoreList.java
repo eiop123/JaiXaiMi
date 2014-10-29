@@ -1,9 +1,21 @@
 package com.example.jiaxiami;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.example.jiaxiami.data.Food;
 import com.example.jiaxiami.data.FoodDAO;
@@ -23,6 +35,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,34 +54,38 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-public class StoreList extends Activity implements LocationListener {
+public class StoreList extends Activity implements LocationListener{
 	
 	Food[] data;
 	Context context;
 	ArrayList<Boolean> list ;
 	ListAdapter adapter;
 	LocationManager lm;
-	String location;
-
+	String bestProv;
+	Location location;
+	double x,y;         //經緯度
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_store_list);
+
 		lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-		
 		Criteria criteria = new Criteria();
-		location = lm.getBestProvider(criteria, true);
-		
-		
+		bestProv = lm.getBestProvider(criteria, true);
 		context = this;
 	    list = new ArrayList<Boolean>();
 		MyTest();
-//		restartTAble();
 		SpinView();
+		
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()  
+        .detectDiskReads()  
+        .detectDiskWrites()  
+        .detectNetwork()  
+        .penaltyLog()  
+        .build());  
 	}
-	
+
 	void SpinView(){
 		
 		Spinner condition_fliter = (Spinner) findViewById(R.id.spinner1); 
@@ -94,8 +111,6 @@ public class StoreList extends Activity implements LocationListener {
 					break;
 				}
 			}
-
-
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
@@ -113,9 +128,9 @@ public class StoreList extends Activity implements LocationListener {
 
 	void MyTest() {
 		FoodDAO dao = new FoodDAOImpl(this);
-		dao.add(new Food(0, "Rice", "ABCD", "123",220));
-		dao.add(new Food(0, "Noodles", "ABCD", "123",100));
-		dao.add(new Food(0, "Soup", "ABCD", "123",300));
+		dao.add(new Food(0, "Rice", "忠孝東路三段", "123",220));
+		dao.add(new Food(0, "Noodles", "台灣", "123",100));
+		dao.add(new Food(0, "Soup", "中國", "123",300));
 		Food[] data = dao.getAll();
 		for(int i = 0; i<data.length; i++) {
 			Log.d("FOOD", data[i].Name + "," + data[i].Addr + "," + data[i].Tel + "," + data[i].money);
@@ -124,8 +139,6 @@ public class StoreList extends Activity implements LocationListener {
 
 	    }
 
-	
-	
 	 @Override
 	    protected void onResume()
 	    {
@@ -145,20 +158,76 @@ public class StoreList extends Activity implements LocationListener {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View v, int position,
 						long id) {
-					// TODO Auto-generated method stub
-					int ID = data[position].ID;
-					Intent it = new Intent(StoreList.this, Food_detail.class);
-					it.putExtra("ID", ID);
-					startActivity(it);
-					// Toast.makeText(context, "" + position, Toast.LENGTH_LONG).show();
+					
+			        FoodDAO dao = new FoodDAOImpl(StoreList.this);
+			        int ID = data[position].ID;
+			        Food f = dao.getFood(ID);
+			        
+					try {
+			        String addr = java.net.URLEncoder.encode(f.Addr, "utf-8");
+					HttpGet httpget = new HttpGet("http://maps.googleapis.com/maps/api/geocode/json?address="+addr);
+					try {
+						HttpClient client = new DefaultHttpClient();
+						HttpResponse response = client.execute(httpget);
+						HttpEntity entity = response.getEntity();
+						String res = EntityUtils.toString(entity, "UTF-8");
+						Log.d("NETWORK", res);
+						
+						JSONArray resArr;
+						JSONObject resObj;
+						
+						resObj = new JSONObject(res);
+						JSONArray obj2 = resObj.getJSONArray("results");
+						JSONObject obj3 = obj2.getJSONObject(0);
+						double lat = obj3.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+						double lng = obj3.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+						Log.d("NETWORK", "lat:" + lat);
+						/*
+						resArr = new JSONArray(res);
+						resObj = resArr.getJSONObject(0);
+						Log.d("NETWORK", resObj.getString("Riverside_Park"));
+						*/
+						Intent it = new Intent(StoreList.this, Food_detail.class);
+						it.putExtra("ID", ID);
+						it.putExtra("lag", lat);
+						it.putExtra("lng", lng);
+						it.putExtra("x", x);
+						it.putExtra("y", y);
+						startActivity(it);
+					 
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}}catch (UnsupportedEncodingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+					
+
 				}});
 
 	        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)||lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-	        	lm.requestLocationUpdates(location, 1000, 1, this);
-	        }
-	        else {
+	        	lm.requestLocationUpdates(bestProv, 1000, 1, this);
+	        	Log.d("setlocat","定位");
+
+	        	location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	        	 if(location == null){
+	            location=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	        }else {
 	        	Toast.makeText(this, "請開啟定位服務 以方便使用更多服務", Toast.LENGTH_LONG).show();
 	        }
+	        	 try{
+	        		 x = location.getLongitude();
+	        		 y = location.getLongitude();
+
+	 	            }catch(java.lang.NullPointerException e){
+	 	            	e.getStackTrace();
+	 	            }
+	        	 }
+	        Log.d("locat",x+","+y);
 	    }
 
     @Override
@@ -268,7 +337,6 @@ public class StoreList extends Activity implements LocationListener {
     	
 		@Override
 		public int getCount() {
-			
 			return data.length;
 		}
 
@@ -293,15 +361,28 @@ public class StoreList extends Activity implements LocationListener {
     		tvname.setText(data[position].Name);
     		tvmoney.setText(String.valueOf(data[position].money));
     		
+    
     		ImageView iv = (ImageView) v.findViewById(R.id.imageView1);
+    		iv.setOnClickListener(new ImageView.OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+					int ID = data[position].ID;
+					int Position = position;
+					Intent intent = new Intent(StoreList.this,Food_picture.class);
+					intent.putExtra("ID", ID);
+					intent.putExtra("Position", Position);
+
+					startActivity(intent);
+					
+				}});
+    		
     		
     		
     		File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "p" + data[position].ID + ".jpg");
-	        
 	        if (file.exists())
 	        {
 	        	Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + "p" + data[position].ID + ".jpg");
-	        	Log.d("abc",Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+"/"+"p" + data[position].ID + ".jpg");
 	        	iv.setImageBitmap(bm);
 	        }
 	        else{
@@ -324,16 +405,17 @@ public class StoreList extends Activity implements LocationListener {
     
 	@Override
 	public void onLocationChanged(Location location) {
-		String x = Double.toString(location.getLongitude());
-		String y = Double.toString(location.getLongitude());
-		LatLng point = new LatLng(location.getLatitude(),location.getLongitude());
-		Toast.makeText(StoreList.this, "open", Toast.LENGTH_SHORT);
+		this.location = location;
+		x = location.getLongitude();
+		y = location.getLongitude();
+//		LatLng point = new LatLng(location.getLatitude(),location.getLongitude());
+		Log.d("location","open");
+		Toast.makeText(this, "open", Toast.LENGTH_SHORT).show();
 		
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		
 		
 	}
 
@@ -345,7 +427,8 @@ public class StoreList extends Activity implements LocationListener {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		Criteria criteria = new Criteria();
+		bestProv = lm.getBestProvider(criteria, true);
 		
 	}
     

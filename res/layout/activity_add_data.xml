@@ -81,6 +81,7 @@
                 android:id="@+id/editTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:ems="10"
                 android:hint="店家名稱" />
 
@@ -91,7 +92,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textViewlocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -103,8 +104,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="21dp"
                 android:ems="10"
-                android:hint="平均價"
+                android:hint="平均金額"
                 android:inputType="number" />
 
         </LinearLayout>
@@ -125,14 +127,12 @@
                 android:id="@+id/editTextTel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="21dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="電話"
                 android:inputType="phone" >
-
-
-
             </EditText>
 
         </LinearLayout>
@@ -154,6 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="14dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="地址"
@@ -178,6 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="14dp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="備註"

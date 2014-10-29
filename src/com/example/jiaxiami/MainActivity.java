@@ -43,10 +43,13 @@ public class MainActivity extends Activity {
 			public void onClick(View arg0) {
 				 FoodDAO dao = new FoodDAOImpl(MainActivity.this);
 			     data = dao.getAll();
+			     try{
 			     Arrays.sort(data, new RandomFoodCompareMoney());
-			     TextView txtrandom =(TextView) findViewById(R.id.textView1);
+			     TextView txtrandom =(TextView) findViewById(R.id.textViewlocation);
 			     txtrandom.setText(data[0].Name);
-				
+			     }catch(ArrayIndexOutOfBoundsException e){
+			    	 e.getStackTrace();
+			     }
 			}});
 	}
 	

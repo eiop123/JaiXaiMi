@@ -12,8 +12,12 @@ import java.util.Date;
 import com.example.jiaxiami.data.Food;
 import com.example.jiaxiami.data.FoodDAO;
 import com.example.jiaxiami.data.FoodDAOImpl;
+
+import android.R.integer;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,16 +58,15 @@ public class AddDataActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+
 				 FoodDAO dao = new FoodDAOImpl(context);
-			        int i = dao.add (new Food(0, etName.getText().toString(), etAddr.getText().toString(), etTel.getText().toString(), Integer.parseInt(etMoney.getText().toString())));
-			        
-			        Log.d("DB", "rowId:" + i);
-			        InputStream is = null;
-			        OutputStream os = null;
+			     int i = dao.add(new Food(0,etName.getText().toString(),etAddr.getText().toString(),etTel.getText().toString(),Integer.parseInt(etMoney.getText().toString())));   
+				 
+
 			        File dest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "p" + i + ".jpg");
-			        
-			        Log.d("DB", dest.toString());
-		
+	        
+				 InputStream is = null;
+			        OutputStream os = null;
 			        if (photoSourcePath != null)
 			        {
 				        try {
@@ -92,13 +95,14 @@ public class AddDataActivity extends Activity {
 				        }	
 			        }
 					finish();
-					}});
+					}
+				});
 		
 		btnCancel.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				finish();
 				
 			}});
 		

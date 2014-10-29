@@ -9,5 +9,4 @@ public interface FoodDAO {
 	public void delete(int ID);
 	public void edit(Food f);
 	Food[] search(String keyword);
-//	public void MapUtility
 }

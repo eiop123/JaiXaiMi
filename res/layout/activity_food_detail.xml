@@ -45,4 +45,13 @@
         android:layout_marginTop="27dp"
         android:text="TextView" />
 
+    <TextView
+        android:id="@+id/textViewlocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewmoney"
+        android:layout_below="@+id/textViewmoney"
+        android:layout_marginTop="50dp"
+        android:text="TextView" />
+
 </RelativeLayout>
