@@ -75,7 +75,7 @@ public class StoreList extends Activity implements LocationListener{
 		bestProv = this.lm.getBestProvider(criteria, true);
 		context = this;
 	    list = new ArrayList<Boolean>();
-//		MyTest();
+		MyTest();
 		SpinView();
 		
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()  

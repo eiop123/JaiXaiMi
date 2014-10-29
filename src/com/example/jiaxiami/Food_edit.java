@@ -43,8 +43,8 @@ public class Food_edit extends Activity {
 		etTel.setText(f.Tel);
 		etMoney.setText("" + f.money);
 		
-		btEdit = (Button) findViewById(R.id.buttonEdit);
-//		btCancel = (Button) findViewById(R.id.buttonCancel);
+		btEdit = (Button) findViewById(R.id.buttonadd);
+		btCancel = (Button) findViewById(R.id.buttonCancel);
 		
 		btEdit.setOnClickListener(new Button.OnClickListener(){
 
