@@ -72,12 +72,7 @@ public class FoodDAOImpl implements FoodDAO {
 		
 	}
 	
-	@Override
-	public void deleteTable(){
-		FoodDBHelper helper = new FoodDBHelper(context);
-		SQLiteDatabase db = helper.getWritableDatabase();
-		db.execSQL("DROP TABLE listdata");
-	}
+	
 
 	@Override
 	public Food[] search(String keyword) {

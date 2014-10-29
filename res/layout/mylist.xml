@@ -24,13 +24,26 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/textViewMoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Small Text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp" />
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textViewMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textViewDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="1.29"
+                android:text="距離" />
+        </LinearLayout>
 
         <RatingBar
             android:id="@+id/ratingBar1"
@@ -43,7 +56,7 @@
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="14dp"
         android:focusable="false" />
 

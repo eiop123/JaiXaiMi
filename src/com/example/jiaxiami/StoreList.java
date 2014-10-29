@@ -123,10 +123,7 @@ public class StoreList extends Activity implements LocationListener {
 //		dao.removeAll();
 
 	    }
-	void restartTalbe(){
-		FoodDAO dao = new FoodDAOImpl(this);
-		dao.deleteTable();
-	}
+
 	
 	
 	 @Override
@@ -330,6 +327,8 @@ public class StoreList extends Activity implements LocationListener {
 		String x = Double.toString(location.getLongitude());
 		String y = Double.toString(location.getLongitude());
 		LatLng point = new LatLng(location.getLatitude(),location.getLongitude());
+		Toast.makeText(StoreList.this, "open", Toast.LENGTH_SHORT);
+		
 	}
 
 	@Override

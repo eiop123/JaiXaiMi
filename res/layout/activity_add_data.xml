@@ -14,19 +14,61 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true" >
+
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout1" >
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView1"
+            android:layout_alignParentRight="true"
+            android:text="nagative" />
+
+        <Button
+            android:id="@+id/buttonadd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/buttonCancel"
+            android:layout_alignLeft="@+id/buttonCancel"
+            android:text="add" />
+
+        <Button
+            android:id="@+id/Button1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/buttonadd"
+            android:layout_alignTop="@+id/imageView1"
+            android:background="@drawable/cammer" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/known" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/scrollView1"
         android:layout_alignParentBottom="true"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+>
+
 
             <TextView
                 android:id="@+id/textView5"
@@ -142,45 +184,6 @@
                 android:inputType="textMultiLine" />
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="180dp"
-                android:layout_height="150dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/known" />
-
-            <Button
-                android:id="@+id/Button1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_above="@+id/imageView1"
-                android:layout_alignLeft="@+id/imageView1"
-                android:background="@drawable/cammer" />
-
-            <Button
-                android:id="@+id/buttonadd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/Button1"
-                android:layout_centerHorizontal="true"
-                android:text="add" />
-
-            <Button
-                android:id="@+id/buttonCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/buttonadd"
-                android:layout_alignBottom="@+id/buttonadd"
-                android:layout_toRightOf="@+id/buttonadd"
-                android:text="nagative" />
-
-        </RelativeLayout>
 
     </LinearLayout>
 

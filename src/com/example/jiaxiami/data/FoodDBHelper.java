@@ -17,7 +17,7 @@ public class FoodDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE listdata(ID integer Primary Key AUTOINCREMENT, Name varchar(30), Addr varchar(30), Tel varchar(20), money Integer, lon Double, lat Double)");
+		db.execSQL("CREATE TABLE listdata(ID integer Primary Key AUTOINCREMENT, Name varchar(30), Addr varchar(30), Tel varchar(20), money Integer, lon Double, lat Double , radom)");
 	}
 
 	@Override
