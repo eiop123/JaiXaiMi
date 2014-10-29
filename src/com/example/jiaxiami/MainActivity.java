@@ -20,10 +20,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -32,18 +34,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
 	Food[] data;
 	Context context;
-	
 	ImageButton bt1;
 	ImageButton bt2;
 	ImageButton bt3;
+	ImageButton bt4;
 	ImageView iv ;
-	ImageView iv2;
-	 
+	int [] aa = {30,90,150,210,270,330};
+    int stopturnnum ;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,91 +56,67 @@ public class MainActivity extends Activity {
       bt1 = (ImageButton) findViewById(R.id.imagebutton1);
       bt2 = (ImageButton) findViewById(R.id.imagebutton2);
       bt3 = (ImageButton) findViewById(R.id.imagebutton3);
-      iv2 = (ImageView) findViewById (R.id.imageView2);
+      bt4 = (ImageButton)findViewById (R.id.Imagebutton4);
+      
       Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.table2);
-		 android.graphics.Bitmap.Config bitmapConfig =
-   	      bitmap.getConfig();
-		 if(bitmapConfig == null) {
-   	    bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
-   	  }
+	  android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+	  if(bitmapConfig == null) 
+	  {bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888; }
 		
-		 bitmap = bitmap.copy(bitmapConfig, true);
-		  Canvas canvas = new Canvas(bitmap);
+		   bitmap = bitmap.copy(bitmapConfig, true);
+		   Canvas canvas = new Canvas(bitmap);
 	       Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	       paint.setColor(Color.rgb(61, 61, 61));
 	       paint.setTextSize((int) (55));
-	paint.setTypeface(Typeface.DEFAULT_BOLD);
-	 canvas.save();
-     
-     canvas.rotate(150,250,250);
-     canvas.drawText("餐廳1" , 150,330, paint);
-     canvas.save();
-     canvas.rotate(-60,250,250);
-     canvas.drawText("餐廳2" , 310,400, paint);
-     canvas.save();
-     canvas.rotate(-60,250,250);
-     canvas.drawText("餐廳3" , 350,550, paint);
-     canvas.save();
-     canvas.rotate(-60,250,250);
-     canvas.drawText("餐廳4" , 230,680, paint);
-     canvas.save();
-     canvas.rotate(-60,250,250);
-     canvas.drawText("餐廳5" , 50,630, paint);
-     canvas.save();
-     canvas.rotate(-60,250,250);
-     canvas.drawText("餐廳6" , 0,450, paint);
-     canvas.save();iv =(ImageView) findViewById(R.id.imageView1);
-     iv.setImageBitmap(bitmap);
+	       paint.setTypeface(Typeface.DEFAULT_BOLD);
+	       
+	      canvas.save();
+          canvas.rotate(150,250,250);
+          canvas.drawText("餐廳1" , 150,330, paint);
+          canvas.save();
+          canvas.rotate(-60,250,250);
+          canvas.drawText("餐廳2" , 310,400, paint);
+          canvas.save();
+          canvas.rotate(-60,250,250);
+          canvas.drawText("餐廳3" , 350,550, paint);
+          canvas.save();
+          canvas.rotate(-60,250,250);
+          canvas.drawText("餐廳4" , 230,680, paint);
+          canvas.save();
+          canvas.rotate(-60,250,250);
+          canvas.drawText("餐廳5" , 50,630, paint);
+          canvas.save();
+          canvas.rotate(-60,250,250);
+          canvas.drawText("餐廳6" , 0,450, paint);
+          canvas.save();
+          
+           iv =(ImageView) findViewById(R.id.imageView1);
+           iv.setImageBitmap(bitmap);
+ 	
     bt2.setOnClickListener(new ImageButton.OnClickListener(){
-
-		@Override
+        @Override
 		public void onClick(View v) {
 			int [] aa = {30,90,150,210,270,330};
 			 int random;
-
-			  
-			  random =  (int) ((Math.random()*7-1));
-			  int b = aa[random];
-			  
-	      int stopturnnum = b +1800;
+             random =  (int) ((Math.random()*7-1));
+			 int b = aa[random];
+			 stopturnnum = b +1800;
 			
-			Animation am = new RotateAnimation(0,stopturnnum, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		Animation am = new RotateAnimation(0,stopturnnum, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        am.setDuration(stopturnnum);
+        am.setFillAfter(true);
+        iv.setAnimation(am);
+        am.startNow(); 
+        }});
 
-
-
-           am.setDuration(stopturnnum);
-
-
-   
-
-            am.setFillAfter(true);
-
-
-      
-
-            iv.setAnimation(am);
-            
-
-
-
-            am.startNow(); 
-
-     
-			
-		}});
-//		Button bt = (Button) findViewById(R.id.buttonEdit);
-//		Button test = (Button) findViewById(R.id.button1);
 	bt1.setOnClickListener(new ImageButton.OnClickListener(){
 
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent(MainActivity.this,StoreList.class);
-			startActivity(intent);
-			
-			
-		}});
-				
-		
+			startActivity(intent);	
+		}});	
+	
 //		test.setOnClickListener(new Button.OnClickListener(){
 //
 //			@Override
@@ -151,41 +131,52 @@ public class MainActivity extends Activity {
 //			    	 e.getStackTrace();
 //			     }
 //			}});
-		bt3.setOnClickListener(new ImageButton.OnClickListener(){
+     bt3.setOnClickListener(new ImageButton.OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
-				int [] aa = {30,90,150,210,270,330};
+				 int [] aa = {30,90,150,210,270,330};
 				 int random;
+                 random =  (int) ((Math.random()*7-1));
+				 int b = aa[random];
+				 stopturnnum = b +1800;
+				 Animation am = new RotateAnimation(0,stopturnnum, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                 am.setDuration(stopturnnum);
+                 am.setFillAfter(true);
+                 iv.setAnimation(am);
+                 am.startNow(); 
+                 }});
+     
+	 bt4.setOnClickListener(new OnClickListener(){
 
+		@Override
+		public void onClick(View arg0) {
+			
+			  if (stopturnnum == 1830)   
 				  
-				  random =  (int) ((Math.random()*7-1));
-				  int b = aa[random];
+	          {Toast.makeText(MainActivity.this,"餐廳4",Toast.LENGTH_LONG).show(); } 
+			  
+			     else if (stopturnnum ==1890)
+			    	 
+			      {Toast.makeText(MainActivity.this,"餐廳5",Toast.LENGTH_LONG).show(); } 
+			  
+			     else if (stopturnnum == 1950)
 				  
-		      int stopturnnum = b +1800;
+			      {Toast.makeText(MainActivity.this,"餐廳6",Toast.LENGTH_LONG).show(); }
+			  
+				 else if (stopturnnum == 2010)
+					 
+				  {Toast.makeText(MainActivity.this,"餐廳1",Toast.LENGTH_LONG).show(); }
+			  
+			     else if (stopturnnum == 2070)
 				
-				Animation am = new RotateAnimation(0,stopturnnum, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-
-
-	           am.setDuration(stopturnnum);
-
-
-	   
-
-	            am.setFillAfter(true);
-
-
-	      
-
-	            iv.setAnimation(am);
-	            
-
-
-
-	            am.startNow(); 
-				
-			}});
+			      {Toast.makeText(MainActivity.this,"餐廳2",Toast.LENGTH_LONG).show(); }
+			  
+			     else if (stopturnnum == 2130)
+					  
+			      {Toast.makeText(MainActivity.this,"餐廳3",Toast.LENGTH_LONG).show(); }
+			  Log.d("abc",""+stopturnnum);
+		}});	
 	}
 	
 	class RandomFoodCompareMoney implements Comparator<Food>{

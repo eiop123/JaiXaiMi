@@ -19,16 +19,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/table2" />
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <ImageButton
+        android:id="@+id/Imagebutton4"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignBottom="@+id/imageView1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:scaleType="fitXY"
-        android:src="@drawable/rto22" />
-
+       android:background="@drawable/ib_bb"
+/>
     <ImageButton
         android:id="@+id/imagebutton2"
         android:layout_width="150dp"
@@ -51,7 +51,7 @@
         android:id="@+id/imagebutton1"
         android:layout_width="150dp"
         android:layout_height="30dp"
-        android:layout_alignLeft="@+id/imageView2"
+        android:layout_alignLeft="@+id/Imagebutton4"
         android:layout_alignParentTop="true"
         android:layout_marginTop="74dp"
         android:background="@drawable/ib_dd"
