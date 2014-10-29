@@ -10,17 +10,23 @@ import com.example.jiaxiami.data.FoodDAO;
 import com.example.jiaxiami.data.FoodDAOImpl;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-	Food[] data ;
+	Food[] data;
+	Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +82,10 @@ public class MainActivity extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
+		}
+		if (id == R.id.action_explain) {
+			Intent it = new Intent(MainActivity.this, HelpActivity.class);
+			startActivity(it);
 		}
 		return super.onOptionsItemSelected(item);
 	}

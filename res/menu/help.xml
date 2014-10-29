@@ -1,18 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.jiaxiami.MainActivity" >
+    tools:context="com.example.jiaxiami.HelpActivity" >
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    
-        <item
-        android:id="@+id/action_explain"
-        android:orderInCategory="90"
-        android:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_help"
-        android:title="Explain"/>
 
 </menu>

@@ -17,5 +17,6 @@
     </string-array>
 
     <string name="title_activity_food_picture">Food_picture</string>
+    <string name="title_activity_help">MainActivity</string>
 
 </resources>

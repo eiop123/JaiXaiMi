@@ -421,13 +421,16 @@ containing a value of this type.
         public static final int list=0x7f020029;
         public static final int powered_by_google_dark=0x7f02002a;
         public static final int powered_by_google_light=0x7f02002b;
+        public static final int ps1=0x7f02002c;
+        public static final int ps2=0x7f02002d;
     }
     public static final class id {
         public static final int Button1=0x7f070019;
-        public static final int action_add=0x7f070035;
-        public static final int action_delete=0x7f070034;
+        public static final int action_add=0x7f070036;
+        public static final int action_delete=0x7f070035;
         public static final int action_edit=0x7f070032;
-        public static final int action_search=0x7f070033;
+        public static final int action_explain=0x7f070033;
+        public static final int action_search=0x7f070034;
         public static final int action_settings=0x7f070031;
         public static final int bgmain=0x7f070028;
         public static final int book_now=0x7f070010;
@@ -486,17 +489,20 @@ containing a value of this type.
         public static final int activity_food_detail=0x7f030001;
         public static final int activity_food_edit=0x7f030002;
         public static final int activity_food_picture=0x7f030003;
-        public static final int activity_main=0x7f030004;
-        public static final int activity_store_list=0x7f030005;
-        public static final int mylist=0x7f030006;
+        public static final int activity_help=0x7f030004;
+        public static final int activity_main=0x7f030005;
+        public static final int activity_store_list=0x7f030006;
+        public static final int dialog_custom=0x7f030007;
+        public static final int mylist=0x7f030008;
     }
     public static final class menu {
         public static final int add_data=0x7f0b0000;
         public static final int food_detail=0x7f0b0001;
         public static final int food_edit=0x7f0b0002;
         public static final int food_picture=0x7f0b0003;
-        public static final int main=0x7f0b0004;
-        public static final int store_list=0x7f0b0005;
+        public static final int help=0x7f0b0004;
+        public static final int main=0x7f0b0005;
+        public static final int store_list=0x7f0b0006;
     }
     public static final class string {
         public static final int accept=0x7f050002;
@@ -611,6 +617,7 @@ containing a value of this type.
         public static final int title_activity_food_detail=0x7f050027;
         public static final int title_activity_food_edit=0x7f050029;
         public static final int title_activity_food_picture=0x7f05002a;
+        public static final int title_activity_help=0x7f05002b;
         public static final int title_activity_store_list=0x7f050026;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
